@@ -1,0 +1,11 @@
+- https://www.mongodb.com/	->	Resources	->	Drivers		->	Node.js
+
+- create new node.js project
+	> create a folder for your project
+	> inside it: $ npm init -y
+	> create index.js file
+	> $ npm i express
+	> write your express starter API code --> see the project folder -> index.js
+	> test your get("/", ()=>{}) endPoint in the browser
+	> $ npm i mongodb	=> 	helps connect Node.js with MongoDB
+	> create db.js		=> look at the way we connect our -> MongoClient.connect("mongodb://localhost:27017/DataBaseName")

@@ -1,0 +1,34 @@
+NoSQL DB:
+	- consists of -> Collections which contain -> Documents
+
+Collection (users, books, ...): stores a specific type of data record -> (JSON Objects) = (key: value pairs) -> called Documents
+
+>> each Document represents -> an individual record -- in a specific Collection
+
+** a Document can has a Nested Documents
+ex: Books collection may has documents like:
+{
+	"_id": "1",
+	"title": "blabla",
+	"price": 55,
+	"pages": 400,
+	"author": {
+		"first_name": "...",
+		"last_name": "...",
+		...
+	}
+},
+{
+	"_id": "2",
+	"title": "blabla",
+	"pages": 400,
+	"author": {
+		"first_name": "...",
+		...
+	}
+}
+
+>> Download from: https://www.mongodb.com/try/download/community
+
+MongoDB Compass = is a GUI
+MongoSh = Mongo Shell

@@ -1,0 +1,50 @@
+you can use it from MongoDB Compass || regular terminal -> $ mongosh
+
+$ show dbs      => list all DBs
+$ use db_name   => use a specific DB -- (even if it doesn't exist -- so you can add new Collection within) || change to another DB
+$ db            => refers to the currently used DB
+$ show collections => lists all Collections within the current used DB
+$ exit => to exist mongosh
+
+----------------- INSERT -----------------------
+One Document in a Collection:
+	$ db.collection_name.insertOne({Document...})
+  --> you can use "collection_name" which doesn't exited yet --> it will be created & then the new Document will be inserted in
+  --> ex:
+        $ use bookstore
+        $ db.books.insertOne({"title": "naaame", "price": 55, ...})
+
+Many Documents in a Collection:
+	$ db.collection_name.insertMany([ {Document1...}, {Document2...}, {Document3...} ])
+
+
+----------------- SELETCT (find) -----------------------
+SELECT All
+	$ db.books.find()	=>  renders the first 20 Documents then===> $ it  => iterate to the next 20
+SELECT FILTER
+	$ db.books.find({filter object})	-> ex: $ db.books.find({title: "someTitle", rating: 7, ...})
+SELECT Fields
+	$ db.books.find({filter object}, {column1: 1, column2: 1})
+		-> ex: $ db.books.find({title: "someTitle", rating: 7, ...}, {title: 1, author: 1})
+		-> ex2 ((without Filter)): $ db.books.find({}, {title: 1, ...})
+SELECT One
+	$ db.books.findOne( {_id: ObjectId(.....)} )
+	$ db.books.findOne( {_id: ObjectId(.....)}, {selected columns ...} )
+CHAINING methods
+	$ db.books.find().count()
+	$ db.books.find().limit(3)
+	$ db.books.find().limit(3).count()
+	------ SORT --------------
+	$ db.books.find().sort({title: 1})	=> sort by title -> ASC
+	$ db.books.find().sort({title: -1})	=> sort by title -> DESC
+	$ db.books.find().sort({title: -1}).limit(3)
+UPDATE
+	$ db.books.updateOne({_id: 1}, {$set: {price: 99, title: "Max"}})
+	$ db.books.updateMany({author: "osomaherrr"}, {$set: {author: "osomaher", title: "blabla"}})
+
+	$ db.books.update({_id: 1}, {$unset: {"price": 1}})         // => set column to Null
+DELETE
+	$ db.books.deleteOne( {_id: ObjectId(.....)} )
+	$ db.books.deleteMany( {author: "terry patchet"} )
+
+	$ db.books.remove({})		// => Deletes all the docs but not the collection itself and its index definitions

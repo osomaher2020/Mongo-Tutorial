@@ -1,0 +1,66 @@
+** all operators begin with $
+
+--- Comparison ---
+$gt	=> greater than
+$lt	=> less than
+$gte	=> greater than || Equal
+$lte	=> less than || Equal
+> other -> ($eq, $ne, $in, $nin)
+
+ex ->  db.books.find({rating: {$gt: 8}})
+ex (multiple filters) ->   db.books.find({ rating: {$gt: 8}, author: "osomaher" })
+
+ex2: db.books.find({ rating: {$in: [7,8,9]} })
+
+--- Logical ---
+$and, $or, $not, $nor
+
+$or: [ {expr1}, {expr2}]
+
+ex: db.books.find({ $and: [ {rating: {$gt: 4}}, {rating: {$lt: 7}} ] })
+
+--- Element ---
+$exists	=> Matches documents that have the specified field
+$type	=> Selects documents if a field is of the specified type
+
+--- Evaluation ---
+$where	=> Matches documents that satisfy a JS expression
+
+
+--- Array ---
+$all => Matches arrays that contain all elements specified in the query.
+$elemMatch => Selects documents if element in the array field matches all the specified $elemMatch conditions.
+$size => Selects documents if the array field is a specified size.
+
+** nested Documents -> are Array values
+{
+	_id: 1,
+	title: "tttttxtttt",
+	genres: ["fantasy", "sci-fi"],		=> Array value
+	reviews: [				=> nested Document
+		{name: ..., content: ...},
+		{name: ..., content: ...}
+	]
+}
+
+ex1: db.books.find({genres: "fantasy"})		==> if "fantasy" is in the array
+ex2: db.books.find({genres: ["fantasy"]})	==> if has exact match to generes:["fantasy"] ---> will not match generes:["fantasy", "sci-fi"]
+
+>> $all
+ex: db.books.find({genres: {$all: ["fantasy", "sci-fi"]} })	=> if both are found in genres array
+
+// Nested Doc
+ex: db.books.find({"reviews.name": "fantasy"})
+
+
+--- Increment ---
+$ db.books.updateOne( {_id: ObjectId("...")}, {$inc: {pages: 2}} )	=> incrementBy 2
+$ db.books.updateOne( {_id: ObjectId("...")}, {$inc: {pages: -2}} )	=> decrementBy 2
+
+
+--- $push / $pull ---
+$ db.books.updateOne( {_id: ObjectId("...")}, {$pull: {genres: "fantasy"}} )	=> removes "fantasy" from genres:[Array]
+$ db.books.updateOne( {_id: ObjectId("...")}, {$push: {genres: "fantasy"}} )	=> adds "fantasy" to genres:[Array]
+
+** push several Items to Array
+$ db.books.updateOne( {_id: ObjectId("...")}, {$push: {genres: {$each: ["fantasy", "blabla"]} }} )
