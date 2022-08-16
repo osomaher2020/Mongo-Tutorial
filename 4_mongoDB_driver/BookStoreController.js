@@ -3,13 +3,20 @@ const { ObjectId } = require("mongodb")
 
 class BookStoreController {
 
-    getAllBooks = async (_req, res) => {
-        let books = []
+    getAllBooks = async (req, res) => {
 
         const db = await connectToDb()
 
+        let books = []
+
+        const currPage = req.query.p ?? 0
+        const booksPerPage = currPage? 3 : 1000
+
         db.collection('books')
             .find()     // returns a cursor
+            .sort({author: 1})
+            .skip(booksPerPage * currPage) // -------- Pagination ----------------
+            .limit(booksPerPage) // -------- Pagination ----------------
             .forEach(book => books.push(book))
             .then(() => {
                 res.status(200).json(books)
@@ -89,6 +96,7 @@ class BookStoreController {
             res.status(500).json({err: "id is not valid"})
         }
     }
+
 }
 
 module.exports = BookStoreController

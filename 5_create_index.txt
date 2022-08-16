@@ -1,0 +1,20 @@
+*** presents efficient execution of queries
+-- no need to scan every document in a collection
+
+// get all indexes
+$ db.books.getindexes()
+
+// create index
+$ db.books.createIndex({rating: 8})
+
+ex2:
+db.products.createIndex(
+  { item: 1, quantity: -1 } ,
+  { name: "query for inventory" }
+)
+
+// docsExamined
+$db.books.find({rating: 8}).explain('executionStats')
+
+// delete index
+$ db.books.dropIndex({rating: 8})
